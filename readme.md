@@ -3,7 +3,6 @@
 This free pace calculator computes pace, distance and time by setting values of two variables. You can use it for training purposes.
 
 ![Pace Calculator Input Form](/assets/images/screenshot-1.png "Pace Calculator Input Form")
-![Pace Calculator Calculation Results](/assets/images/screenshot-2.png "Pace Calculator Calculation Results")
 
 ## Installation
 

@@ -24,7 +24,6 @@ Add the following code to your template where you would like the Pace Calculator
 == Screenshots ==
 
 1. The Pace Calculator Input Form.
-2. The Pace Calculator Calculation Results.
 
 == Installation ==
 

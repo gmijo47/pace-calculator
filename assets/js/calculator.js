@@ -53,14 +53,14 @@ function calculate() {
 function getResult(result1, result2) {
 	let html = '';
 	result1.forEach(r => {
-		html += `<tr><td colspan="2">${r}</td></tr>`
+		html += `<tr><td colspan="2" class="animate">${r}</td></tr>`
 	})
 	html += '<tr><th colspan="2">At this pace, the times required for popular race distances are:</th></tr>';
 	result2.forEach((r, index) => {
 		if(index % 2 === 0) {
 			html += '<tr>';
 		}
-		html += `<td>${r}</td>`
+		html += `<td class="animate">${r}</td>`
 		if(index % 2 !== 0) {
 			html += '</tr>';
 		}
