@@ -1,5 +1,5 @@
 const pace_types = {
-	'Marathon': 42.195,
+	'Maraton': 42.195,
 	'Half-Marathon': 21.0975,
 	'10K': 10,
 	'5K': 5,
@@ -19,7 +19,7 @@ function calculate() {
 	if (!input.valid()) return;
 
 	if (!time_pace) {
-		input.exception('time_pace', 'Field is required');
+		input.exception('time_pace', 'Polje je obavezno');
 		return;
 	}
 
@@ -31,12 +31,10 @@ function calculate() {
 	} = calculateSpeedMetrics(time, distance);
 
 	const results = [
-		`${perMile} per mile`,
-		`${perKilometer} per kilometer`,
-		`${milesPerHour} miles/hour`,
-		`${kilometersPerHour} kilometers/hour`,
-		`${metersPerMinute} meters/minute`,
-		`${metersPerSecond} meters/second`,
+		`${perKilometer} po kilometru`,
+		`${kilometersPerHour} kilometara na sat`,
+		`${metersPerMinute} metara u minuti`,
+		`${metersPerSecond} metara u sekundi`,
 	];
 
 	const typeResults = [];
@@ -44,7 +42,7 @@ function calculate() {
 	Object.keys(pace_types).forEach(key => {
 		const typeDistance = pace_types[key];
 		const {perKilometerRaw} = calculateSpeedMetrics(time, distance);
-		typeResults.push(`${key} at ${secondsToHMS(perKilometerRaw * typeDistance)}`);
+		typeResults.push(`${key}: ${secondsToHMS(perKilometerRaw * typeDistance)}`);
 	});
 
 	_('result_0').innerHTML = getResult(results, typeResults);
@@ -55,16 +53,10 @@ function getResult(result1, result2) {
 	result1.forEach(r => {
 		html += `<tr><td colspan="2" class="animate">${r}</td></tr>`
 	})
-	html += '<tr><th colspan="2">At this pace, the times required for popular race distances are:</th></tr>';
-	result2.forEach((r, index) => {
-		if(index % 2 === 0) {
-			html += '<tr>';
-		}
-		html += `<td class="animate">${r}</td>`
-		if(index % 2 !== 0) {
-			html += '</tr>';
-		}
-	})
+	html += '<tr><th colspan="2">Ovim tempom do određenih distanci:</th></tr>';
+	result2.forEach(r => {
+		html += `<tr><td class="animate">${r}</td></tr>`;
+	});
 	return html;
 }
 
@@ -86,7 +78,7 @@ function getTime(value) {
 
 function secondsToHMS(seconds) {
 	if (seconds < 0) {
-		return "Invalid input"; // Handle negative input if needed
+		return "Nesipravan unos"; // Handle negative input if needed
 	}
 
 	const hours = roundTo(Math.floor(seconds / 3600), 0);
@@ -96,15 +88,15 @@ function secondsToHMS(seconds) {
 	let result = "";
 
 	if (hours > 0) {
-		result += `${hours} hour${hours > 1 ? "s" : ""} `;
+		result += `${hours}h `;
 	}
 
 	if (minutes > 0) {
-		result += `${minutes} minute${minutes > 1 ? "s" : ""} `;
+		result += `${minutes}m `;
 	}
 
 	if (sec > 0) {
-		result += `${sec} second${sec > 1 ? "s" : ""}`;
+		result += `${sec}s `;
 	}
 
 	return result.trim();
@@ -142,21 +134,21 @@ function calculateTime() {
 	if (!input.valid()) return;
 
 	if (!time_pace) {
-		input.exception('time_pace', 'Field is required');
+		input.exception('time_pace', 'Polje je obavezno');
 		return;
 	}
 
 	const results = [];
 
 	const time = getTime(time_pace);
-	const timeToGo = 'The time required will be: ' + secondsToHMS(time * distance);
+	const timeToGo = 'Potrebno vrijeme ' + secondsToHMS(time * distance);
 	results.push(timeToGo);
 
 	const typeResults = [];
 	//Calculate popular distances
 	Object.keys(pace_types).forEach(key => {
 		const distance = pace_types[key];
-		typeResults.push(`${key} at ${secondsToHMS(time * distance)}`);
+		typeResults.push(`${key}: ${secondsToHMS(time * distance)}`);
 	});
 
 	_('result_1').innerHTML = getResult(results, typeResults);
@@ -169,12 +161,12 @@ function calculateDistance() {
 	if (!input.valid()) return;
 
 	if (!time_distance) {
-		input.exception('time_distance', 'Field is required');
+		input.exception('time_distance', 'Polje je obavezno');
 		return;
 	}
 
 	if (!pace_distance) {
-		input.exception('pace_distance', 'Field is required');
+		input.exception('pace_distance', 'Polje je obavezno');
 		return;
 	}
 
@@ -184,10 +176,8 @@ function calculateDistance() {
 	const distance = calculateDistanceMetrics(time, pace);
 
 	const results = [
-		`${distance.miles} Miles`,
-		`${distance.kilometers} Kilometers`,
-		`${distance.meters} Meters`,
-		`${distance.yards} Yards`,
+		`${distance.kilometers} Kilometara`,
+		`${distance.meters} Metara`,
 	];
 
 	const typeResults = [];
@@ -202,7 +192,7 @@ function calculateDistance() {
 
 function calculateDistanceMetrics(timeInSeconds, pacePerKilometer) {
 	if (timeInSeconds <= 0 || pacePerKilometer <= 0) {
-		return "Invalid input. Time and pace must be positive values.";
+		return "Neispravan unos, vrijeme i tempo moraju biti pozitivni brojevi.";
 	}
 
 	// Calculate distance in kilometers
