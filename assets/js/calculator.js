@@ -26,15 +26,15 @@ function calculate() {
 	const distance = distance_pace;
 	const time = getTime(time_pace);
 	const {
-		perKilometer, perMile, milesPerHour, kilometersPerHour,
+		perKilometer, kilometersPerHour,
 		metersPerMinute, metersPerSecond
 	} = calculateSpeedMetrics(time, distance);
 
 	const results = [
-		`${perKilometer} po kilometru`,
-		`${kilometersPerHour} kilometara na sat`,
-		`${metersPerMinute} metara u minuti`,
-		`${metersPerSecond} metara u sekundi`,
+		`${perKilometer} po km`,
+		`${kilometersPerHour} km/h`,
+		`${metersPerMinute} m/min`,
+		`${metersPerSecond} m/s`, 
 	];
 
 	const typeResults = [];
@@ -53,10 +53,6 @@ function getResult(result1, result2) {
 	result1.forEach(r => {
 		html += `<tr><td colspan="2" class="animate">${r}</td></tr>`
 	})
-	html += '<tr><th colspan="2">Ovim tempom do određenih distanci:</th></tr>';
-	result2.forEach(r => {
-		html += `<tr><td class="animate">${r}</td></tr>`;
-	});
 	return html;
 }
 
@@ -88,29 +84,24 @@ function secondsToHMS(seconds) {
 	let result = "";
 
 	if (hours > 0) {
-		result += `${hours}h `;
-	}
-
-	if (minutes > 0) {
-		result += `${minutes}m `;
-	}
-
-	if (sec > 0) {
-		result += `${sec}s `;
+		result = `${hours}h${minutes ? ` ${minutes}min` : ''}${sec ? ` ${sec}s` : ''}`;
+	} else if (minutes > 0) {
+		result = `${minutes}min${sec ? ` ${sec}s` : ''}`;
+	} else if (sec > 0) {
+		result = `${sec}s`;
+	} else {
+		result = '0s';
 	}
 
 	return result.trim();
 }
 
 function calculateSpeedMetrics(timeInSeconds, distanceInKilometers) {
-	// Convert distance to miles
-	const distanceInMiles = distanceInKilometers * 0.621371;
 
 	// Calculate speed metrics
 	const perKilometerRaw = timeInSeconds / distanceInKilometers;
 	const perKilometer = secondsToHMS(timeInSeconds / distanceInKilometers);
-	const perMile = secondsToHMS(timeInSeconds / distanceInMiles);
-	const milesPerHour = roundTo(distanceInMiles / (timeInSeconds / 3600), 3);
+	
 	const kilometersPerHour = roundTo(distanceInKilometers / (timeInSeconds / 3600), 3);
 	const metersPerMinute = roundTo((distanceInKilometers * 1000) / (timeInSeconds / 60), 3);
 	const metersPerSecond = roundTo((distanceInKilometers * 1000) / timeInSeconds, 3);
@@ -118,8 +109,6 @@ function calculateSpeedMetrics(timeInSeconds, distanceInKilometers) {
 	return {
 		perKilometerRaw,
 		perKilometer,
-		perMile,
-		milesPerHour,
 		kilometersPerHour,
 		metersPerMinute,
 		metersPerSecond,
@@ -176,8 +165,8 @@ function calculateDistance() {
 	const distance = calculateDistanceMetrics(time, pace);
 
 	const results = [
-		`${distance.kilometers} Kilometara`,
-		`${distance.meters} Metara`,
+		`${distance.kilometers} km`,
+		`${distance.meters} m`,
 	];
 
 	const typeResults = [];
