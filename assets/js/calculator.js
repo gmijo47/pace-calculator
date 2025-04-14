@@ -1,5 +1,5 @@
 const pace_types = {
-	'Maraton': 42.195,
+	'Marathon': 42.195,
 	'Half-Marathon': 21.0975,
 	'10K': 10,
 	'5K': 5,
